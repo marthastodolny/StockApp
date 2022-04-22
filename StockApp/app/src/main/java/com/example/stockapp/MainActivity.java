@@ -33,9 +33,10 @@ public class MainActivity extends AppCompatActivity {
                 EditText editText = findViewById(R.id.editText);
                 String ticker = editText.getText().toString();
                 intent.putExtra(EXTRA_MESSAGE, ticker);
-                startActivity(intent);
                 //get stock info and save to object
-                //load new screen with chart and info
+                //load new screen with info
+                startActivity(intent);
+
             }
         });
 
