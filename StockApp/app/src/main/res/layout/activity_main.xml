@@ -25,33 +25,45 @@
         app:layout_constraintVertical_bias="0.0"
         tools:text="Enter company name or ticker symbol:" />
 
+    <!--
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="84dp"
+        android:gravity="center"
+        android:onClick="showDatePickerDialog"
+        android:text="@string/select_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText" />
+    -->
     <EditText
         android:id="@+id/editText"
+        android:gravity="center"
         android:layout_width="296dp"
         android:layout_height="58dp"
-        android:layout_marginStart="68dp"
         android:layout_marginTop="44dp"
-        android:layout_marginEnd="68dp"
         android:layout_marginBottom="426dp"
         android:hint="@string/enter"
         android:importantForAutofill="no"
         android:inputType=""
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.523"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.382" />
 
     <Button
         android:id="@+id/button"
-        android:backgroundTint="@android:color/holo_green_light"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="158dp"
-        android:layout_marginTop="31dp"
-        android:layout_marginEnd="159dp"
-        android:layout_marginBottom="342dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="112dp"
+        android:backgroundTint="@android:color/holo_green_light"
+        android:gravity="center"
         android:text="@string/Search"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText" />

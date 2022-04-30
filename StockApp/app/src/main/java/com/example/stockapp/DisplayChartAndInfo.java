@@ -1,24 +1,26 @@
 package com.example.stockapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.widget.TextView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.util.Objects;
 
 public class DisplayChartAndInfo extends AppCompatActivity {
     //create initial json object
@@ -28,7 +30,7 @@ public class DisplayChartAndInfo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_chart_and_info);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
         Intent intent = getIntent();
         String ticker = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
 
@@ -80,25 +82,17 @@ public class DisplayChartAndInfo extends AppCompatActivity {
         //hit different api url to retrieve the company name for the requested ticker
         //initial api does not contain the company name
         String urlForCompName = "http://api.marketstack.com/v1/tickers/" + ticker + "?access_key=4d52849737d48c895cf732a518c33188";
-        URL compURL = null;
-        try {
-            compURL = new URL(urlForCompName);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        JSONObject compNameObj = createJSONObject(compURL);
+        URL compURL;
         String compName = "";
         try {
+            compURL = new URL(urlForCompName);
+            JSONObject compNameObj = createJSONObject(compURL);
             compName = compNameObj.getString("name");
-        } catch (JSONException e) {
+            stock = objectMapper.readValue(isolatedData.toString(), Stock.class);
+        } catch (MalformedURLException | JSONException | JsonProcessingException e) {
             e.printStackTrace();
         }
 
-        try {
-            stock = objectMapper.readValue(isolatedData.toString(), Stock.class);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
         stock.setCompanyName(compName);
         stock.setTicker(ticker);
 
@@ -123,7 +117,26 @@ public class DisplayChartAndInfo extends AppCompatActivity {
 
     //create api url from requested stock ticker
     private URL createURL(String ticker) throws MalformedURLException {
-        return new URL("http://api.marketstack.com/v1/eod?access_key=4d52849737d48c895cf732a518c33188&symbols=" + ticker + "&date_from=" + "2022-04-19");
+        return new URL("http://api.marketstack.com/v1/eod?access_key=4d52849737d48c895cf732a518c33188&symbols=" + ticker + "&date_from=" + createDate());
+    }
+    private String createDate() {
+        LocalDate localDate = LocalDate.now();
+        int day = localDate.getDayOfMonth();
+        int month = localDate.getMonthValue();
+        int year = localDate.getYear();
+
+        String yearStr = Integer.toString(year);
+        String monthStr = Integer.toString(month);
+        String dayStr = Integer.toString(day);
+        //api url date formatting
+        if(month < 10) {
+            monthStr = "0" + monthStr;
+        }
+        if(day < 10) {
+            dayStr = "0" + dayStr;
+        }
+
+        return yearStr + "-" + monthStr + "-" + dayStr;
     }
 
     //create json object from api url
